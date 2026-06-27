@@ -1,0 +1,10 @@
+node_modules/
+*.db
+*.sqlite
+*.log
+.env
+cloudflared.exe
+railway.exe
+flyctl.zip
+.DS_Store
+Thumbs.db
