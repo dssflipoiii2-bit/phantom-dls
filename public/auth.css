@@ -1,0 +1,85 @@
+/* =============================================
+   Auth Page Styles
+   ============================================= */
+:root {
+    --bg:            #0b0c10;
+    --text:          #ffffff;
+    --muted:         #8b8d96;
+    --accent:        #7b7ee3;
+    --accent-dark:   #6769cc;
+    --glass-bg:      rgba(18, 18, 24, 0.65);
+    --glass-border:  rgba(255, 255, 255, 0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',sans-serif; min-height:100vh;
+}
+.bg-image {
+    position:fixed; inset:0; z-index:-2;
+    background:url('bg.png') center/cover no-repeat;
+    filter:brightness(0.6) saturate(1.1); transform:scale(1.05);
+}
+.bg-overlay {
+    position:fixed; inset:0; z-index:-1;
+    background:linear-gradient(to bottom, rgba(11,12,16,0.25) 0%, rgba(11,12,16,0.97) 80%);
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@keyframes fadeInUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-24px); } to { opacity:1; transform:translateY(0); } }
+.animate-fade-in-up { opacity:0; animation:fadeInUp 0.7s cubic-bezier(.16,1,.3,1) forwards; }
+.animate-fade-in-down { opacity:0; animation:fadeInDown 0.7s cubic-bezier(.16,1,.3,1) forwards; }
+
+/* Navbar */
+.navbar { display:flex; justify-content:center; padding-top:22px; position:fixed; top:0; width:100%; z-index:200; }
+.nav-content {
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:1px solid var(--glass-border); border-radius:100px; padding:8px 24px;
+    width:90%; max-width:900px; box-shadow:0 12px 40px rgba(0,0,0,0.45);
+}
+.nav-brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; letter-spacing:.5px; }
+.phantom-logo-icon { display:flex; align-items:center; }
+
+/* Auth container */
+.auth-wrap { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:80px 20px 20px; }
+.auth-card {
+    background:rgba(16,16,22,0.8); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--glass-border); border-radius:24px; padding:40px;
+    width:100%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    animation: fadeInUp 0.5s cubic-bezier(.16,1,.3,1) forwards;
+}
+.auth-logo-icon { display:flex; justify-content:center; margin-bottom:24px; }
+.auth-card h2 { text-align:center; font-size:1.5rem; font-weight:700; margin-bottom:28px; }
+
+.form-group { margin-bottom:16px; }
+.form-group label { display:block; margin-bottom:7px; color:var(--muted); font-size:.88rem; font-weight:500; }
+.form-control {
+    width:100%; padding:13px 16px;
+    background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px; color:white; font-size:.95rem; font-family:'Inter',sans-serif;
+    outline:none; transition:border-color .2s;
+}
+.form-control:focus { border-color:var(--accent); }
+.form-control::placeholder { color:rgba(255,255,255,0.25); }
+
+.btn-submit {
+    width:100%; padding:14px; border-radius:12px; border:none;
+    background:var(--accent); color:white; font-weight:700; font-size:1rem;
+    cursor:pointer; margin-top:8px; font-family:'Inter',sans-serif;
+    transition: background .2s, transform .15s;
+}
+.btn-submit:hover { background:var(--accent-dark); transform:translateY(-1px); }
+
+.auth-switch { margin-top:20px; text-align:center; font-size:.88rem; color:var(--muted); }
+.auth-switch a { color:var(--accent); text-decoration:none; cursor:pointer; font-weight:500; }
+.auth-switch a:hover { text-decoration:underline; }
+
+.error-msg {
+    background:rgba(255,80,80,0.1); border:1px solid rgba(255,80,80,0.3);
+    color:#ff7070; padding:10px 14px; border-radius:10px;
+    font-size:.88rem; margin-bottom:16px; display:none; line-height:1.4;
+}
+
+.input-hint { font-size:.75rem; color:var(--muted); margin-top:5px; }
