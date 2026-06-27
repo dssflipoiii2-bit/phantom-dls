@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phantom | Личный кабинет</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10; --text: #ffffff; --muted: #8b8d96;
+            --accent: #7b7ee3; --accent-dark: #6769cc;
+            --glass-bg: rgba(18,18,24,0.65); --glass-border: rgba(255,255,255,0.06);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
+
+        .bg-image { position:fixed; inset:0; z-index:-2; background:url('bg.png') center/cover no-repeat; filter:brightness(0.5); }
+        .bg-overlay { position:fixed; inset:0; z-index:-1; background:linear-gradient(to bottom,rgba(11,12,16,0.3) 0%,rgba(11,12,16,0.98) 100%); }
+
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeInDown { from{opacity:0;transform:translateY(-24px)} to{opacity:1;transform:translateY(0)} }
+
+        /* Navbar */
+        .navbar { display:flex; justify-content:center; padding-top:22px; position:fixed; top:0; width:100%; z-index:200; animation:fadeInDown .7s ease forwards; }
+        .nav-content {
+            display:flex; align-items:center; justify-content:space-between;
+            background:var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border:1px solid var(--glass-border); border-radius:100px; padding:8px 24px;
+            width:90%; max-width:900px; box-shadow:0 12px 40px rgba(0,0,0,0.45);
+        }
+        .nav-brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; text-decoration:none; color:white; }
+
+        /* Cabinet content */
+        .cabinet-container { max-width:960px; margin:0 auto; padding:110px 20px 60px; }
+        
+        .cabinet-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:36px; }
+        .cabinet-title { font-size:2rem; font-weight:800; }
+        .btn-logout {
+            background:rgba(255,60,60,0.1); color:#ff7070;
+            border:1px solid rgba(255,60,60,0.2); padding:10px 20px;
+            border-radius:100px; font-weight:600; font-size:.88rem; cursor:pointer;
+            transition: background .2s;
+        }
+        .btn-logout:hover { background:rgba(255,60,60,0.2); }
+
+        .cab-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+        .cab-card {
+            background:rgba(16,16,24,0.7); backdrop-filter:blur(12px);
+            border:1px solid var(--glass-border); border-radius:18px; padding:24px;
+            animation: fadeInUp .6s ease forwards; opacity:0;
+        }
+        .cab-card:nth-child(1) { animation-delay:.08s; }
+        .cab-card:nth-child(2) { animation-delay:.16s; }
+        .cab-card:nth-child(3) { animation-delay:.24s; }
+        .cab-card:nth-child(4) { animation-delay:.32s; }
+
+        .card-label { font-size:.75rem; font-weight:700; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:8px; }
+        .card-value { font-size:1.25rem; font-weight:600; word-break:break-all; }
+
+        /* Sub status */
+        .badge-active { background:rgba(46,213,115,.15); color:#2ed573; padding:3px 10px; border-radius:4px; font-size:.75rem; font-weight:700; margin-left:8px; }
+
+        /* Stat rows */
+        .stat-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+        .stat-row:last-child { border-bottom:none; }
+        .stat-name { color:var(--muted); font-size:.9rem; }
+        .stat-value { color:var(--accent); font-weight:600; font-size:.9rem; }
+
+        /* Big card spans full width */
+        .cab-card.full { grid-column: 1 / -1; }
+
+        /* Loading state */
+        #loading { text-align:center; padding:120px 20px; color:var(--muted); font-size:1rem; }
+        .loading-spinner {
+            width:40px; height:40px; border:3px solid rgba(123,126,227,0.2);
+            border-top-color:var(--accent); border-radius:50%; margin:0 auto 16px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to{ transform:rotate(360deg); } }
+
+        /* No sub notice */
+        .no-sub-notice {
+            background:rgba(123,126,227,0.08); border:1px solid rgba(123,126,227,0.2);
+            border-radius:12px; padding:16px; margin-top:12px;
+            font-size:.88rem; color:var(--muted); line-height:1.5;
+        }
+        .no-sub-notice a { color:var(--accent); text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body>
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">
+                <svg viewBox="0 0 40 40" width="26" height="26" fill="none">
+                    <path d="M20 3L37 33H3L20 3Z" stroke="#7b7ee3" stroke-width="2.5" stroke-linejoin="round" fill="rgba(123,126,227,0.1)"/>
+                    <circle cx="20" cy="25" r="2.5" fill="#7b7ee3"/>
+                    <line x1="20" y1="14" x2="20" y2="21" stroke="#7b7ee3" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+                Phantom
+            </a>
+            <button onclick="handleLogout()" class="btn-logout">Выйти</button>
+        </div>
+    </nav>
+
+    <div class="cabinet-container">
+        <!-- Loading -->
+        <div id="loading">
+            <div class="loading-spinner"></div>
+            Загрузка данных...
+        </div>
+
+        <!-- Content (hidden until data loads) -->
+        <div id="cabinet-content" style="display:none;">
+            <div class="cabinet-header">
+                <h1 class="cabinet-title">Личный кабинет</h1>
+            </div>
+
+            <div class="cab-grid">
+                <!-- UID + Email -->
+                <div class="cab-card">
+                    <div class="card-label">UID</div>
+                    <div class="card-value" id="user-uid">---</div>
+                    <div class="card-label" style="margin-top:20px;">Email</div>
+                    <div class="card-value" id="user-email" style="font-size:1rem;">---</div>
+                </div>
+
+                <!-- Subscription -->
+                <div class="cab-card">
+                    <div class="card-label">Статус подписки</div>
+                    <div class="card-value" id="sub-status">---</div>
+                    <div class="card-label" style="margin-top:20px;">Истекает</div>
+                    <div class="card-value" id="sub-date" style="font-size:1rem;color:var(--muted);">---</div>
+                    <div id="no-sub-block" style="display:none;">
+                        <div class="no-sub-notice">
+                            У вас нет активной подписки.<br>
+                            <a href="index.html#pricing">Приобрести тариф →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HWID (managed by C++ loader) -->
+                <div class="cab-card">
+                    <div class="card-label">Привязка к ПК (HWID)</div>
+                    <div class="card-value" id="user-hwid" style="font-size:.95rem; color:var(--muted); font-style:italic;">Привязывается при запуске клиента</div>
+                    <div style="margin-top:12px; font-size:.8rem; color:var(--muted); line-height:1.4;">
+                        После первого запуска Phantom клиент автоматически привяжется к вашему ПК. Привязка хранится в папке <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;">S:\Phantom\</code>
+                    </div>
+                </div>
+
+                <!-- Stats (full width) -->
+                <div class="cab-card full">
+                    <div class="card-label">Игровая статистика</div>
+                    <div id="stats-container" style="margin-top:12px;">
+                        <div style="color:var(--muted);font-size:.9rem;">Загрузка...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
